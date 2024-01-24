@@ -1,0 +1,17 @@
+{
+  "name": "webpack-dts-plugin",
+  "version": "0.0.1",
+  "description": "generate a single bundle of dts in webpack",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "./lib"
+  ],
+  "scripts": {
+    "build": "npx tsc",
+    "dev": "pnpm build --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
