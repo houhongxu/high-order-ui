@@ -496,12 +496,19 @@ video {
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
 }
-.text-xs {
-  font-size: 0.75rem;
-  line-height: 1rem;
+.flex {
+  display: flex;
+}
+.h-full {
+  height: 100%;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.overflow-y-scroll {
+  overflow-y: scroll;
 }
 
 body {
-  background: blue;
 }
 

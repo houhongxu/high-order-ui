@@ -11,18 +11,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "pui": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.21.1",
-    "pui": "workspace:*"
+    "react-router-dom": "^6.21.1"
   },
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
+    "blurhash-webpack-plugin": "workspace:*",
     "html-webpack-plugin": "^5.6.0",
     "react-refresh": "^0.14.0",
-    "webpack-dev-server": "^4.15.1",
-    "style-loader": "^3.3.4"
+    "style-loader": "^3.3.4",
+    "webpack-dev-server": "^4.15.1"
   }
 }

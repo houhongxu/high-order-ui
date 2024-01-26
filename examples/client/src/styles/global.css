@@ -3,9 +3,11 @@
 @tailwind utilities;
 
 body {
-  background: #eee;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
-.red {
-  background: red;
+/* 针对Webkit内核浏览器如Chrome, Safari等 */
+::-webkit-scrollbar {
+  display: none;
 }

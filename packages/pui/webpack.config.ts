@@ -29,6 +29,7 @@ const webpackConfig: Configuration = {
     extensions: ['.js', '.mjs', '.cjs', '.jsx', '.ts', '.tsx'],
     plugins: [new TsconfigPathsPlugin()],
   },
+  externals: ['react', 'react-dom'],
   module: {
     rules: [
       {
@@ -48,8 +49,7 @@ const webpackConfig: Configuration = {
   plugins: [
     new DefinePlugin({ 'process.env': JSON.stringify(env.parsed) }),
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash:8].css',
-      chunkFilename: '[id].[contenthash:8].css',
+      filename: 'index.css',
     }),
     new BundleDeclarationsWebpackPlugin({
       entry: ['./src/index.ts'],

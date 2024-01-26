@@ -5,8 +5,9 @@
 - [x] eslint+prettier环境
 - [x] 路径别名配置
 - [x] pui打包dts tsc打包无法实现watch模式 使用插件bundle-declarations-webpack-plugin
+- [x] blurhash-webpack-plugin插件
 
-- [ ] 瀑布流组件
+- [x] 瀑布流组件
 - [ ] 虚拟无限滚动组件
 - [ ] 文件上传组件
 

@@ -1,0 +1,26 @@
+{
+  "name": "blurhash-webpack-plugin",
+  "version": "0.0.2",
+  "description": "optimize image with blurhash",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "./lib"
+  ],
+  "scripts": {
+    "build": "tsc && esbuild ./src/** --minify --platform=node --external:webpack --external:sharp --bundle --outdir=./lib",
+    "dev": "pnpm build --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "blurhash": "^2.0.5"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.2"
+  },
+  "peerDependencies": {
+    "sharp": "^0.33.2"
+  }
+}

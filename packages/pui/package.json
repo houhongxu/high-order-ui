@@ -16,11 +16,11 @@
   "license": "ISC",
   "dependencies": {
     "classnames": "^2.5.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "viewerjs": "^1.11.6"
   },
   "devDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "tailwindcss": "^3.4.1",

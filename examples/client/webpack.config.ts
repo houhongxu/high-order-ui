@@ -1,4 +1,5 @@
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
+import BlurhashWebpackPlugin from 'blurhash-webpack-plugin'
 import { config } from 'dotenv'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
@@ -48,8 +49,6 @@ const webpackConfig: WebpackConfiguration = {
     rules: [
       {
         test: /\.css$/,
-        exclude: /node_modules/,
-        include: path.join(__dirname, 'src'),
         use: [
           isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
@@ -62,6 +61,10 @@ const webpackConfig: WebpackConfiguration = {
         include: path.join(__dirname, 'src'),
         use: ['babel-loader', 'thread-loader'],
       },
+      {
+        test: /\.(png|jpe?g|gif|svg|webp)$/,
+        type: 'asset/resource',
+      },
     ],
   },
   plugins: [
@@ -71,15 +74,15 @@ const webpackConfig: WebpackConfiguration = {
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash:8].css',
-      chunkFilename: '[id].[contenthash:8].css',
     }),
     isDevelopment && new ReactRefreshWebpackPlugin(),
+    new BlurhashWebpackPlugin(),
   ].filter(Boolean),
   devServer: {
     static: {
       directory: path.join(__dirname, './public'), //托管静态资源public文件夹
     },
-    port: 9000,
+    port: 9001,
     compress: false,
     historyApiFallback: true, // 支持 react-router history模式
   },
