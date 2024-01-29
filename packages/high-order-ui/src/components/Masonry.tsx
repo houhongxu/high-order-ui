@@ -55,6 +55,7 @@ export function Masonry<T>({
       height: 0,
       list: [] as ItemType<T>[],
     }))
+    console.log(columnCount, columnSpace)
 
     for (let i = 0; i < items.length; i++) {
       const item = items[i]
@@ -82,13 +83,13 @@ export function Masonry<T>({
       >
         {columnsData.map((column, index) => (
           <div
-            key={column.height || index}
+            key={column.height + index / 1000 || index}
             style={{
               width: `calc(${100 / columnCount}% - ${columnSpace / 2}px)`,
             }}
           >
             {column.list.map((item, index) => (
-              <div key={item.itemHeight + index / 10000 || index}>
+              <div key={item.itemHeight + index / 1000 || index}>
                 {renderItem(item.data)}
               </div>
             ))}
