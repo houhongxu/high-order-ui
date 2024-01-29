@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 
+/**
+ * 获取窗口宽度
+ * @description 暂不考虑ssr
+ */
 export const useWindowWidth = () => {
-  const [windowWidth, setWindowWidth] = useState(0)
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
 
   useEffect(() => {
-    setWindowWidth(window.innerWidth)
-
     const handleResize = () => {
       setWindowWidth(window.innerWidth)
     }
@@ -18,5 +20,5 @@ export const useWindowWidth = () => {
     }
   }, [])
 
-  return [windowWidth, setWindowWidth] as const
+  return windowWidth
 }

@@ -8,6 +8,8 @@
 - [x] blurhash-webpack-plugin插件
 
 - [x] 瀑布流组件
+- [ ] 替换图片
+- [ ] github ci/cd
 - [ ] 虚拟无限滚动组件
 - [ ] 文件上传组件
 

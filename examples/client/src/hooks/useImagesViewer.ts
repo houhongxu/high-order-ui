@@ -12,7 +12,9 @@ interface Props {
    */
   options?: Viewer.Options
 }
-
+/**
+ * 使用viewerjs库展示图集
+ */
 export const useImagesViewer = ({ max, options }: Props) => {
   // 单实例单dom，并复用img的dom
   const parentRef = useRef<HTMLDivElement | null>(null)

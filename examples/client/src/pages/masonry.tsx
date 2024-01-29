@@ -1,15 +1,13 @@
-import { MasoryDataType, masonryDataConfig } from '@/config'
+import { DataType, dataConfig } from '@/config'
+import { useImagesViewer } from '@/hooks/useImagesViewer'
 import { useWindowWidth } from '@/hooks/useWindowWidth'
-import { Masonry } from 'pui'
-import { FunctionComponent, memo } from 'react'
-
-const getImageData = (str: string) => {
-  const url = new URL(str)
-  return Object.fromEntries(url.searchParams)
-}
+import { getImageData } from '@/utils'
+import { Image } from 'high-order-ui'
+import { Masonry } from 'high-order-ui'
+import { FunctionComponent, HtmlHTMLAttributes, memo } from 'react'
 
 export const MasonryPage = () => {
-  const [windowWidth] = useWindowWidth()
+  const windowWidth = useWindowWidth()
 
   const getColumn = (
     windowWidth: number,
@@ -30,12 +28,13 @@ export const MasonryPage = () => {
     <div className="p-[20px]">
       <Masonry
         columnCount={getColumn(windowWidth, [400, 800, 1200])}
-        space={14}
-        items={masonryDataConfig.map((i) => {
-          const { height, width } = getImageData(i.cover)
+        columnSpace={14}
+        items={dataConfig.map((i) => {
+          const { height, width } = getImageData(i.imgs[0])
+
           return {
             data: i,
-            itemHeight: (parseInt(height) / parseInt(width)) * 100, //  需求精准排列时再计算文字高度
+            itemHeight: ((height ?? 0) / (width ?? 0)) * 100, //  需求精准排列时再计算文字高度
           }
         })}
         renderItem={(item) => (
@@ -48,21 +47,38 @@ export const MasonryPage = () => {
 
 // ---
 
-type CardProps = JSX.IntrinsicElements['div'] & {
-  value: MasoryDataType
+type CardProps = HtmlHTMLAttributes<HTMLDivElement> & {
+  value: DataType
 }
 
 const Card: FunctionComponent<CardProps> = memo(({ value, ...rest }) => {
+  const { height, width, blurhash } = getImageData(value.imgs[0])
+
+  const { view } = useImagesViewer({
+    max: 10,
+    options: {
+      title: false,
+      toggleOnDblclick: false,
+      slideOnTouch: false,
+    },
+  })
+
   return (
     <div {...rest}>
-      <img
-        className="w-full rounded-[16px] mb-[10px]"
-        src={value.cover}
+      <Image
+        onClick={() => {
+          view(value.imgs)
+        }}
+        className="w-full rounded-[16px] mb-[10px] overflow-hidden"
+        src={value.imgs[0]}
         alt="封面图"
-      />
+        width={width}
+        height={height}
+        blurhash={blurhash}
+      ></Image>
 
       <span className="text-[#333333] text-[14px] leading-[20px] font-normal">
-        {value.time} {value.time && '|'} {value.name}
+        {value.name}
       </span>
     </div>
   )

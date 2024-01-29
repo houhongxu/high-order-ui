@@ -496,17 +496,41 @@ video {
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
 }
+.\!absolute {
+  position: absolute !important;
+}
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+.left-0 {
+  left: 0px;
+}
+.top-0 {
+  top: 0px;
+}
 .flex {
   display: flex;
 }
 .h-full {
   height: 100%;
 }
+.w-full {
+  width: 100%;
+}
 .justify-between {
   justify-content: space-between;
 }
+.overflow-x-scroll {
+  overflow-x: scroll;
+}
 .overflow-y-scroll {
   overflow-y: scroll;
+}
+.scroll-smooth {
+  scroll-behavior: smooth;
 }
 
 body {

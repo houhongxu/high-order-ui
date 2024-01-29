@@ -17,20 +17,23 @@ const getOptimizedData = async (path: string) => {
   const { width = 0, height = 0 } = await sharpLink.metadata()
 
   // 获取缩小尺寸的图并获取宽高，小尺寸blur速度更快
-  const { data: buffer, info } = await sharpLink.resize({ width: 8 }).toBuffer({
-    resolveWithObject: true,
-  })
+  const { data: buffer, info } = await sharpLink
+    .resize({ width: 16 })
+    .toBuffer({
+      resolveWithObject: true,
+    })
 
   // buffer转uint8ClampedArray
   const uint8Array = new Uint8Array(buffer.buffer)
   const uint8ClampedArray = new Uint8ClampedArray(uint8Array.buffer)
 
-  const blurhash = encode(uint8ClampedArray, info.width, info.height, 4, 3)
+  const blurhash = encode(uint8ClampedArray, info.width, info.height, 4, 4)
 
   const data: OptimizedData = {
     width,
     height,
-    blurhash,
+    // 使用编码防止#=?等干扰query解析，用户使用时先分类query再解码即可
+    blurhash: encodeURIComponent(blurhash),
   }
 
   return data
@@ -45,19 +48,24 @@ class ImageOptimizerWebpackPlugin {
         // 获取所有assets路径与对应的OptimizedData
         const dataMap: Record<string, OptimizedData> = {}
 
-        for (const module of compilation.modules) {
-          if (module.type === 'asset/resource') {
-            const modulePath = module.libIdent({
-              context: compiler.options.context || '',
-            })
+        // 使用并发加速
+        const dataTasks = Array.from(compilation.modules).map(
+          async (module) => {
+            if (module.type === 'asset/resource') {
+              const modulePath = module.libIdent({
+                context: compiler.options.context || '',
+              })
 
-            if (modulePath) {
-              const data = await getOptimizedData(modulePath)
+              if (modulePath) {
+                const data = await getOptimizedData(modulePath)
 
-              dataMap[modulePath] = data
+                dataMap[modulePath] = data
+              }
             }
-          }
-        }
+          },
+        )
+
+        await Promise.all(dataTasks)
 
         // 根据路径修改assetModuleFilename
         compiler.options.output.assetModuleFilename = (pathData: PathData) => {

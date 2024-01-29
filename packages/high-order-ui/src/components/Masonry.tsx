@@ -1,6 +1,6 @@
-import ScrollView from './ScrollView'
+import { ScrollView } from './ScrollView'
 import classNames from 'classnames'
-import { ReactNode, useMemo } from 'react'
+import { HTMLAttributes, ReactNode, useMemo } from 'react'
 
 interface ItemType<T> {
   /**
@@ -15,19 +15,19 @@ interface ItemType<T> {
   itemHeight: number
 }
 
-type Props<T> = JSX.IntrinsicElements['div'] & {
+type Props<T> = HTMLAttributes<HTMLDivElement> & {
   /**
    * 列间距
    */
-  space: number
+  columnSpace: number
 
   /**
-   * 行数
+   * 列数
    */
   columnCount?: number
 
   /**
-   * 数据
+   * item数据数组
    */
   items: ItemType<T>[]
 
@@ -44,11 +44,11 @@ interface Column<T> {
 
 export function Masonry<T>({
   columnCount = 2,
-  space,
+  columnSpace,
   items,
   renderItem,
   className,
-  ...rest
+  ...restProps
 }: Props<T>) {
   const columnsData = useMemo(() => {
     const columns = Array.from<Column<T>>({ length: columnCount }).map(() => ({
@@ -76,11 +76,16 @@ export function Masonry<T>({
 
   return (
     <ScrollView>
-      <div {...rest} className={classNames('flex justify-between', className)}>
+      <div
+        {...restProps}
+        className={classNames('flex justify-between', className)}
+      >
         {columnsData.map((column, index) => (
           <div
             key={column.height || index}
-            style={{ width: `calc(${100 / columnCount}% - ${space / 2}px)` }}
+            style={{
+              width: `calc(${100 / columnCount}% - ${columnSpace / 2}px)`,
+            }}
           >
             {column.list.map((item, index) => (
               <div key={item.itemHeight + index / 10000 || index}>

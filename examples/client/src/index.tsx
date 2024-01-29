@@ -1,8 +1,9 @@
 import { routeConfig } from './routes/config'
 import '@/styles/global.css'
-import 'pui/lib/index.css'
+import 'high-order-ui/lib/index.css'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import 'viewerjs/dist/viewer.css'
 
 const root = document.getElementById('root')
 

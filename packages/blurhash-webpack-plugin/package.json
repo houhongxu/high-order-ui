@@ -1,6 +1,6 @@
 {
   "name": "blurhash-webpack-plugin",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "optimize image with blurhash",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
