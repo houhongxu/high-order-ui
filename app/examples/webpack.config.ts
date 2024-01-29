@@ -84,7 +84,6 @@ const webpackConfig: WebpackConfiguration = {
     },
     port: 9001,
     compress: false,
-    historyApiFallback: true, // 支持 react-router history模式
   },
 }
 
