@@ -1,6 +1,6 @@
 {
-  "name": "client",
-  "description": "",
+  "name": "examples",
+  "description": "high-order-ui examples",
   "scripts": {
     "lint": "eslint ./src/**/*.{ts,tsx}",
     "dev": "cross-env NODE_ENV=development webpack serve",

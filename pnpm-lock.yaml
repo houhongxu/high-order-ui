@@ -108,7 +108,7 @@ importers:
         specifier: ^5.1.4
         version: 5.1.4(webpack@5.89.0)
 
-  examples/client:
+  app/examples:
     dependencies:
       high-order-ui:
         specifier: workspace:*
