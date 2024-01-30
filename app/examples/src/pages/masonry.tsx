@@ -2,8 +2,7 @@ import { DataType, dataConfig } from '@/config'
 import { useImagesViewer } from '@/hooks/useImagesViewer'
 import { useWindowWidth } from '@/hooks/useWindowWidth'
 import { getImageData } from '@/utils'
-import { Image } from 'high-order-ui'
-import { Masonry } from 'high-order-ui'
+import { Image, ScrollView, Masonry } from 'high-order-ui'
 import { FunctionComponent, HtmlHTMLAttributes, memo } from 'react'
 
 export const MasonryPage = () => {
@@ -25,10 +24,8 @@ export const MasonryPage = () => {
   }
 
   return (
-    <div className="p-[20px]">
+    <ScrollView className="p-[20px] h-screen">
       <Masonry
-        columnCount={getColumn(windowWidth, [400, 800, 1200])}
-        columnSpace={14}
         items={dataConfig.map((i) => {
           const { height, width } = getImageData(i.imgs[0])
 
@@ -40,8 +37,10 @@ export const MasonryPage = () => {
         renderItem={(item) => (
           <Card key={item._id} className="mb-[15px]" value={item}></Card>
         )}
+        columnCount={getColumn(windowWidth, [400, 800, 1200])}
+        columnSpace={14}
       ></Masonry>
-    </div>
+    </ScrollView>
   )
 }
 

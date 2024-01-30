@@ -1,4 +1,3 @@
-import { ScrollView } from './ScrollView'
 import classNames from 'classnames'
 import { HTMLAttributes, ReactNode, useMemo } from 'react'
 
@@ -17,6 +16,16 @@ interface ItemType<T> {
 
 type Props<T> = HTMLAttributes<HTMLDivElement> & {
   /**
+   * items数据
+   */
+  items: ItemType<T>[]
+
+  /**
+   * item的渲染函数
+   */
+  renderItem: (item: T) => ReactNode
+
+  /**
    * 列间距
    */
   columnSpace: number
@@ -25,16 +34,6 @@ type Props<T> = HTMLAttributes<HTMLDivElement> & {
    * 列数
    */
   columnCount?: number
-
-  /**
-   * item数据数组
-   */
-  items: ItemType<T>[]
-
-  /**
-   * item的渲染函数
-   */
-  renderItem: (item: T) => ReactNode
 }
 
 interface Column<T> {

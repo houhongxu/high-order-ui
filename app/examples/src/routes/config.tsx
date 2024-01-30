@@ -1,9 +1,9 @@
 import { MainLayout } from '@/layouts'
 import { HomePage } from '@/pages/home'
 import { ImagePage } from '@/pages/image'
-import { ListPage } from '@/pages/list'
 import { MasonryPage } from '@/pages/masonry'
 import { ScrollViewPage } from '@/pages/scroll-view'
+import { VirtualListPage } from '@/pages/virtual-list'
 import { RouteObject } from 'react-router-dom'
 
 export const routeConfig: RouteObject[] = [
@@ -28,8 +28,8 @@ export const routeConfig: RouteObject[] = [
         element: <ImagePage></ImagePage>,
       },
       {
-        path: '/list',
-        element: <ListPage></ListPage>,
+        path: '/virtual-list',
+        element: <VirtualListPage></VirtualListPage>,
       },
     ],
   },

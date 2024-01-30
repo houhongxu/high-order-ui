@@ -3,7 +3,7 @@ import { FunctionComponent, HTMLAttributes, ReactNode } from 'react';
 declare const Image$1: FunctionComponent<Props$2>;
 export declare const ScrollView: FunctionComponent<Props$1>;
 export declare function Masonry<T>({ columnCount, columnSpace, items, renderItem, className, ...restProps }: Props<T>): import("react/jsx-runtime").JSX.Element;
-export declare function VirtualList<T>({ items, itemHeight, renderItem, className, ...resProps }: Props$3<T>): import("react/jsx-runtime").JSX.Element;
+export declare function VirtualList<T>({ items, renderItem, className, cacheCount, ...resProps }: Props$3<T>): import("react/jsx-runtime").JSX.Element;
 export interface ItemType<T> {
 	/**
 	 * item数据，会返回给renderItem
@@ -17,6 +17,14 @@ export interface ItemType<T> {
 }
 export type Props<T> = HTMLAttributes<HTMLDivElement> & {
 	/**
+	 * items数据
+	 */
+	items: ItemType<T>[];
+	/**
+	 * item的渲染函数
+	 */
+	renderItem: (item: T) => ReactNode;
+	/**
 	 * 列间距
 	 */
 	columnSpace: number;
@@ -24,24 +32,26 @@ export type Props<T> = HTMLAttributes<HTMLDivElement> & {
 	 * 列数
 	 */
 	columnCount?: number;
-	/**
-	 * item数据数组
-	 */
-	items: ItemType<T>[];
-	/**
-	 * item的渲染函数
-	 */
-	renderItem: (item: T) => ReactNode;
 };
+interface ItemType$1<T> {
+	/**
+	 * item数据，会返回给renderItem
+	 */
+	data: T;
+	/**
+	 * item高度
+	 */
+	itemHeight: number;
+}
 type Props$1 = HTMLAttributes<HTMLDivElement> & {
 	/**
 	 * 滚动到底部时的回调
 	 */
-	onScrollToLower?: HTMLAttributes<HTMLDivElement>["onScroll"];
+	onScrollToHeader?: HTMLAttributes<HTMLDivElement>["onScroll"];
 	/**
 	 * 滚动到顶部时的回调
 	 */
-	onScrollToUpper?: HTMLAttributes<HTMLDivElement>["onScroll"];
+	onScrollToFooter?: HTMLAttributes<HTMLDivElement>["onScroll"];
 	/**
 	 * 滚动到指定位置
 	 */
@@ -89,15 +99,17 @@ type Props$3<T> = HTMLAttributes<HTMLDivElement> & {
 	/**
 	 * items数据
 	 */
-	items: T[];
-	/**
-	 * item高度
-	 */
-	itemHeight: number;
+	items: ItemType$1<T>[];
 	/**
 	 * item的渲染函数
 	 */
 	renderItem: (item: T) => ReactNode;
+	/**
+	 * 列表上下缓冲数量
+	 * @default 2
+	 * @description 滚动时提前渲染的元素数量，滚动方向处出现空白时加大该数值可以填补空白
+	 */
+	cacheCount?: number;
 };
 
 export {

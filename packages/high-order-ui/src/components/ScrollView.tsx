@@ -11,12 +11,12 @@ type Props = HTMLAttributes<HTMLDivElement> & {
   /**
    * 滚动到底部时的回调
    */
-  onScrollToLower?: HTMLAttributes<HTMLDivElement>['onScroll']
+  onScrollToHeader?: HTMLAttributes<HTMLDivElement>['onScroll']
 
   /**
    * 滚动到顶部时的回调
    */
-  onScrollToUpper?: HTMLAttributes<HTMLDivElement>['onScroll']
+  onScrollToFooter?: HTMLAttributes<HTMLDivElement>['onScroll']
 
   /**
    * 滚动到指定位置
@@ -39,8 +39,8 @@ type Props = HTMLAttributes<HTMLDivElement> & {
 export const ScrollView: FunctionComponent<Props> = ({
   onScroll,
   className,
-  onScrollToLower,
-  onScrollToUpper,
+  onScrollToHeader,
+  onScrollToFooter,
   scrollToPosition,
   isSmooth,
   scrollDirection = 'vertical',
@@ -55,12 +55,30 @@ export const ScrollView: FunctionComponent<Props> = ({
     }
 
     if (ref.current) {
-      const { scrollTop, scrollHeight, clientHeight } = ref.current
+      if (scrollDirection === 'vertical') {
+        const { scrollTop, scrollHeight, clientHeight } = ref.current
 
-      if (scrollTop === 0 && onScrollToUpper) {
-        onScrollToUpper(event)
-      } else if (scrollTop + clientHeight >= scrollHeight && onScrollToLower) {
-        onScrollToLower(event)
+        if (scrollTop === 0 && onScrollToHeader) {
+          onScrollToHeader(event)
+        } else if (
+          scrollTop + clientHeight >= scrollHeight &&
+          onScrollToFooter
+        ) {
+          onScrollToFooter(event)
+        }
+      }
+
+      if (scrollDirection === 'horizontal') {
+        const { scrollLeft, scrollWidth, clientWidth } = ref.current
+
+        if (scrollLeft === 0 && onScrollToHeader) {
+          onScrollToHeader(event)
+        } else if (
+          scrollLeft + clientWidth >= scrollWidth &&
+          onScrollToFooter
+        ) {
+          onScrollToFooter(event)
+        }
       }
     }
   }
