@@ -3,13 +3,14 @@ import { FunctionComponent, HTMLAttributes, ReactNode } from 'react';
 declare const Image$1: FunctionComponent<Props$2>;
 export declare const ScrollView: FunctionComponent<Props$1>;
 export declare function Masonry<T>({ columnCount, columnSpace, items, renderItem, className, ...restProps }: Props<T>): import("react/jsx-runtime").JSX.Element;
+export declare function VirtualList<T>({ items, itemHeight, renderItem, className, ...resProps }: Props$3<T>): import("react/jsx-runtime").JSX.Element;
 export interface ItemType<T> {
 	/**
 	 * item数据，会返回给renderItem
 	 */
 	data: T;
 	/**
-	 * 元素高度
+	 * item高度
 	 * @description 元素高度 = 图片高度 + 其它高度，需求不精确时可以仅传 图片高度/图片宽度*100，高度仅用于计算item插入哪一列列
 	 */
 	itemHeight: number;
@@ -28,7 +29,7 @@ export type Props<T> = HTMLAttributes<HTMLDivElement> & {
 	 */
 	items: ItemType<T>[];
 	/**
-	 * 子项的渲染
+	 * item的渲染函数
 	 */
 	renderItem: (item: T) => ReactNode;
 };
@@ -83,6 +84,20 @@ type Props$2 = HTMLAttributes<HTMLDivElement> & {
 	 * @default true
 	 */
 	isLazy?: boolean;
+};
+type Props$3<T> = HTMLAttributes<HTMLDivElement> & {
+	/**
+	 * items数据
+	 */
+	items: T[];
+	/**
+	 * item高度
+	 */
+	itemHeight: number;
+	/**
+	 * item的渲染函数
+	 */
+	renderItem: (item: T) => ReactNode;
 };
 
 export {

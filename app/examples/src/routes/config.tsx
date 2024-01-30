@@ -1,6 +1,7 @@
 import { MainLayout } from '@/layouts'
 import { HomePage } from '@/pages/home'
 import { ImagePage } from '@/pages/image'
+import { ListPage } from '@/pages/list'
 import { MasonryPage } from '@/pages/masonry'
 import { ScrollViewPage } from '@/pages/scroll-view'
 import { RouteObject } from 'react-router-dom'
@@ -25,6 +26,10 @@ export const routeConfig: RouteObject[] = [
       {
         path: '/image',
         element: <ImagePage></ImagePage>,
+      },
+      {
+        path: '/list',
+        element: <ListPage></ListPage>,
       },
     ],
   },

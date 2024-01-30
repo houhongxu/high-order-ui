@@ -3,11 +3,4 @@
 @tailwind utilities;
 
 body {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
-/* 针对Webkit内核浏览器如Chrome, Safari等 */
-::-webkit-scrollbar {
-  display: none;
 }

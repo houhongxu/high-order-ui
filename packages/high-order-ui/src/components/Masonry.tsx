@@ -9,7 +9,7 @@ interface ItemType<T> {
   data: T
 
   /**
-   * 元素高度
+   * item高度
    * @description 元素高度 = 图片高度 + 其它高度，需求不精确时可以仅传 图片高度/图片宽度*100，高度仅用于计算item插入哪一列列
    */
   itemHeight: number
@@ -32,7 +32,7 @@ type Props<T> = HTMLAttributes<HTMLDivElement> & {
   items: ItemType<T>[]
 
   /**
-   * 子项的渲染
+   * item的渲染函数
    */
   renderItem: (item: T) => ReactNode
 }
@@ -55,7 +55,6 @@ export function Masonry<T>({
       height: 0,
       list: [] as ItemType<T>[],
     }))
-    console.log(columnCount, columnSpace)
 
     for (let i = 0; i < items.length; i++) {
       const item = items[i]
@@ -76,26 +75,24 @@ export function Masonry<T>({
   }, [items, columnCount])
 
   return (
-    <ScrollView>
-      <div
-        {...restProps}
-        className={classNames('flex justify-between', className)}
-      >
-        {columnsData.map((column, index) => (
-          <div
-            key={column.height + index / 1000 || index}
-            style={{
-              width: `calc(${100 / columnCount}% - ${columnSpace / 2}px)`,
-            }}
-          >
-            {column.list.map((item, index) => (
-              <div key={item.itemHeight + index / 1000 || index}>
-                {renderItem(item.data)}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </ScrollView>
+    <div
+      {...restProps}
+      className={classNames('flex justify-between', className)}
+    >
+      {columnsData.map((column, index) => (
+        <div
+          key={column.height + index / 1000 || index}
+          style={{
+            width: `calc(${100 / columnCount}% - ${columnSpace / 2}px)`,
+          }}
+        >
+          {column.list.map((item, index) => (
+            <div key={item.itemHeight + index / 1000 || index}>
+              {renderItem(item.data)}
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
   )
 }
