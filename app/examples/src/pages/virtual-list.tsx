@@ -4,7 +4,13 @@ import { VirtualList } from 'high-order-ui'
 export const VirtualListPage = () => {
   return (
     <VirtualList
-      className="w-full h-[300px]"
+      className="h-screen"
+      onScrollToFooter={() => {
+        alert('footer')
+      }}
+      onScrollToHeader={() => {
+        alert('header')
+      }}
       items={dataConfig.map((item, index) => ({
         data: item,
         itemHeight: 40 + index * 3,

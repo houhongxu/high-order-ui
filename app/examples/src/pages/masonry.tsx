@@ -2,10 +2,22 @@ import { DataType, dataConfig } from '@/config'
 import { useImagesViewer } from '@/hooks/useImagesViewer'
 import { useWindowWidth } from '@/hooks/useWindowWidth'
 import { getImageData } from '@/utils'
-import { Image, ScrollView, Masonry } from 'high-order-ui'
-import { FunctionComponent, HtmlHTMLAttributes, memo } from 'react'
+import { Image, Masonry } from 'high-order-ui'
+import { FunctionComponent, HtmlHTMLAttributes, memo, useState } from 'react'
+
+const initialData = dataConfig.map((i) => {
+  const { height, width } = getImageData(i.imgs[0])
+
+  return {
+    data: i,
+    itemHeight: ((height ?? 0) / (width ?? 0)) * 100, //  需求精准排列时再计算文字高度
+  }
+})
 
 export const MasonryPage = () => {
+  const [data, setData] = useState(initialData)
+
+  // TODO 使用ResizeObserver api
   const windowWidth = useWindowWidth()
 
   const getColumn = (
@@ -24,23 +36,19 @@ export const MasonryPage = () => {
   }
 
   return (
-    <ScrollView className="p-[20px] h-screen">
-      <Masonry
-        items={dataConfig.map((i) => {
-          const { height, width } = getImageData(i.imgs[0])
-
-          return {
-            data: i,
-            itemHeight: ((height ?? 0) / (width ?? 0)) * 100, //  需求精准排列时再计算文字高度
-          }
-        })}
-        renderItem={(item) => (
-          <Card key={item._id} className="mb-[15px]" value={item}></Card>
-        )}
-        columnCount={getColumn(windowWidth, [400, 800, 1200])}
-        columnSpace={14}
-      ></Masonry>
-    </ScrollView>
+    <Masonry
+      className="p-[20px] h-screen"
+      scrollCallbackRange={700}
+      onScrollToFooter={() => {
+        setData((pre) => [...pre, ...initialData])
+      }}
+      items={data}
+      renderItem={(item) => (
+        <Card key={item._id} className="mb-[15px]" value={item}></Card>
+      )}
+      columnCount={getColumn(windowWidth, [400, 800, 1200])}
+      columnSpace={14}
+    ></Masonry>
   )
 }
 

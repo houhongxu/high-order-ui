@@ -1,11 +1,11 @@
+import { ScrollView } from './ScrollView'
 import classNames from 'classnames'
 import {
+  ComponentProps,
   DOMAttributes,
-  HTMLAttributes,
   ReactNode,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react'
 
@@ -21,7 +21,7 @@ interface ItemType<T> {
   itemHeight: number
 }
 
-type Props<T> = HTMLAttributes<HTMLDivElement> & {
+type Props<T> = ComponentProps<typeof ScrollView> & {
   /**
    * items数据
    */
@@ -37,18 +37,17 @@ type Props<T> = HTMLAttributes<HTMLDivElement> & {
    * @default 2
    * @description 滚动时提前渲染的元素数量，滚动方向处出现空白时加大该数值可以填补空白
    */
-  cacheCount?: number
+  overRender?: number
 }
 
 export function VirtualList<T>({
   items,
   renderItem,
   className,
-  cacheCount = 2,
-  ...resProps
+  overRender = 2,
+  ...restProps
 }: Props<T>) {
   // 根据clientHeight获取展示数量
-  const ref = useRef<HTMLDivElement>(null)
   const [count, setCount] = useState(0)
 
   // 根据scrollTop获取起始下标
@@ -58,7 +57,7 @@ export function VirtualList<T>({
   const totalHeight = items.reduce((p, c) => (p += c.itemHeight), 0)
 
   // 根据itemHeight获取item对应高度
-  const itemIndexToHeight = useMemo(() => {
+  const itemIndexToTop = useMemo(() => {
     const map: Record<string, number> = { 0: 0 }
 
     items.reduce((p, c, i) => ((p += c.itemHeight), (map[i + 1] = p), p), 0)
@@ -75,54 +74,47 @@ export function VirtualList<T>({
     let i = 0
 
     for (; i < items.length; i++) {
-      if (itemIndexToHeight[i] > event.currentTarget.scrollTop) {
+      if (itemIndexToTop[i] > event.currentTarget.scrollTop) {
         break
       }
     }
 
-    const index = i - 1 - cacheCount >= 0 ? i - 1 - cacheCount : 0
-    setStartIndex(index)
+    const index = i - 1 - overRender >= 0 ? i - 1 - overRender : 0
 
-    // 从startIndex开始遍历items，直到增加的高度超过clientHeight，此时的i - index就是count
+    // 从startIndex开始遍历items，直到增加的高度超过clientHeight，此时的i-index就是count
     i = index
 
     for (; i < items.length; i++) {
       if (
-        itemIndexToHeight[i] - itemIndexToHeight[index] >
+        itemIndexToTop[i] - itemIndexToTop[index] >
         event.currentTarget.clientHeight
       ) {
         break
       }
     }
 
-    setCount(i - index + cacheCount)
+    setStartIndex(index)
+    setCount(i - index + overRender)
   }
 
   // 初始化count
   useEffect(() => {
-    if (ref.current) {
-      // 遍历items，直到高度超过clientHeight，此时的i就是count
-      let height = 0
-      let i = 0
+    // 初始假定为全屏高度，遍历items，直到高度超过innerHeight，此时的i就是count
 
-      for (; i < items.length; i++) {
-        if (height < ref.current.clientHeight) {
-          height += items[i].itemHeight
-        } else {
-          break
-        }
+    for (let i = 0; i < items.length; i++) {
+      if (itemIndexToTop[i] > window.innerHeight) {
+        setCount(i)
+
+        break
       }
-
-      setCount(i)
     }
-  }, [ref.current])
+  }, [items, itemIndexToTop])
 
   return (
-    <div
-      {...resProps}
-      ref={ref}
+    <ScrollView
       onScroll={handleScroll}
-      className={classNames('relative overflow-y-scroll', className)}
+      className={classNames('relative', className)}
+      {...restProps}
     >
       {/* 撑开滚动区域 */}
       <div style={{ height: totalHeight }}></div>
@@ -134,12 +126,12 @@ export function VirtualList<T>({
           className="absolute"
           style={{
             height: item.itemHeight,
-            top: itemIndexToHeight[startIndex + index],
+            top: itemIndexToTop[startIndex + index],
           }}
         >
           {renderItem(item.data)}
         </div>
       ))}
-    </div>
+    </ScrollView>
   )
 }

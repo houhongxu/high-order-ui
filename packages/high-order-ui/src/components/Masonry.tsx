@@ -1,5 +1,5 @@
-import classNames from 'classnames'
-import { HTMLAttributes, ReactNode, useMemo } from 'react'
+import { ScrollView } from './ScrollView'
+import { ComponentProps, ReactNode, useMemo } from 'react'
 
 interface ItemType<T> {
   /**
@@ -14,7 +14,7 @@ interface ItemType<T> {
   itemHeight: number
 }
 
-type Props<T> = HTMLAttributes<HTMLDivElement> & {
+type Props<T> = ComponentProps<typeof ScrollView> & {
   /**
    * items数据
    */
@@ -46,9 +46,9 @@ export function Masonry<T>({
   columnSpace,
   items,
   renderItem,
-  className,
   ...restProps
 }: Props<T>) {
+  // 瀑布流数据
   const columnsData = useMemo(() => {
     const columns = Array.from<Column<T>>({ length: columnCount }).map(() => ({
       height: 0,
@@ -74,24 +74,23 @@ export function Masonry<T>({
   }, [items, columnCount])
 
   return (
-    <div
-      {...restProps}
-      className={classNames('flex justify-between', className)}
-    >
-      {columnsData.map((column, index) => (
-        <div
-          key={column.height + index / 1000 || index}
-          style={{
-            width: `calc(${100 / columnCount}% - ${columnSpace / 2}px)`,
-          }}
-        >
-          {column.list.map((item, index) => (
-            <div key={item.itemHeight + index / 1000 || index}>
-              {renderItem(item.data)}
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
+    <ScrollView {...restProps}>
+      <div className="flex justify-between">
+        {columnsData.map((column, index) => (
+          <div
+            key={column.height + index / 1000 || index}
+            style={{
+              width: `calc(${100 / columnCount}% - ${columnSpace / 2}px)`,
+            }}
+          >
+            {column.list.map((item, index) => (
+              <div key={item.itemHeight + index / 1000 || index}>
+                {renderItem(item.data)}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </ScrollView>
   )
 }
