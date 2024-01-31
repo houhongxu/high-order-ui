@@ -67,7 +67,7 @@ export const Image: FunctionComponent<Props> = ({
         className="absolute top-0 left-0 w-full h-full"
         onLoad={(e) => {
           onLoad?.(e)
-          setTimeout(() => setOnLoading(false), 5000)
+          setOnLoading(false)
           Cache.add(src)
         }}
         src={src}
