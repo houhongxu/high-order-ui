@@ -64,16 +64,14 @@ export const Image: FunctionComponent<Props> = ({
       {/* img在最下面加载 */}
       <img
         loading={isLazy ? 'lazy' : 'eager'}
-        className="absolute top-0 left-0"
+        className="absolute top-0 left-0 w-full h-full"
         onLoad={(e) => {
           onLoad?.(e)
-          setOnLoading(false)
+          setTimeout(() => setOnLoading(false), 5000)
           Cache.add(src)
         }}
         src={src}
         alt={alt}
-        width={width}
-        height={height}
       ></img>
 
       {/* 没有占位图则哈希展示 */}
