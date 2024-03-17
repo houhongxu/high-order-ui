@@ -1,7 +1,7 @@
 import { dataConfig } from '@/config'
 import { VirtualList } from 'high-order-ui'
 
-export const VirtualListPage = () => {
+export default function VirtualListPage() {
   return (
     <VirtualList
       className="h-screen"

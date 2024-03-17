@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ahooks": "^3.7.10",
     "high-order-ui": "workspace:*",
     "query-string": "^8.1.0",
     "react": "^18.2.0",

@@ -14,7 +14,7 @@ const initialData = dataConfig.map((i) => {
   }
 })
 
-export const MasonryPage = () => {
+export default function MasonryPage() {
   const [data, setData] = useState(initialData)
 
   // TODO 使用ResizeObserver api

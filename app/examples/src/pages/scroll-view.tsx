@@ -1,6 +1,6 @@
 import { ScrollView } from 'high-order-ui'
 
-export const ScrollViewPage = () => {
+export default function ScrollViewPage() {
   return (
     <>
       ↑↓

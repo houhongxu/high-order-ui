@@ -2,7 +2,7 @@ import { dataConfig } from '@/config'
 import { getImageData } from '@/utils'
 import { Image } from 'high-order-ui'
 
-export const ImagePage = () => {
+export default function ImagePage() {
   const img = dataConfig[0].imgs[0]
   const { width, height, blurhash } = getImageData(img)
 

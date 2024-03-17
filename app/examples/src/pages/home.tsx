@@ -1,10 +1,10 @@
-import { routeConfig } from '@/routes/config'
+import { routesConfig } from '@/routes/config'
 import { Link } from 'react-router-dom'
 
-export const HomePage = () => {
+export default function HomePage() {
   return (
     <div className="flex flex-col">
-      {routeConfig[0].children?.map(
+      {routesConfig[0].children?.map(
         (route) =>
           route.path !== '/' && (
             <Link key={route.path} to={route.path || '/'}>
