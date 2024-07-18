@@ -18,7 +18,8 @@
     "blurhash": "^2.0.5"
   },
   "devDependencies": {
-    "sharp": "^0.33.2"
+    "sharp": "^0.33.2",
+    "esbuild": "^0.19.12"
   },
   "peerDependencies": {
     "sharp": "^0.33.2"

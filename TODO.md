@@ -10,7 +10,7 @@
 - [x] 瀑布流组件
 - [x] 替换图片
 - [x] github ci/cd
-- [ ] 虚拟无限滚动组件
+- [x] 虚拟无限滚动组件
 - [ ] 文件上传组件
 
-- [ ] 参考[bundle-declarations-webpack-plugin](https://github.com/dominicbirch/bundle-declarations-webpack-plugin)实现webpack-dts-plugin
+- [ ] 重构为rollup打包
