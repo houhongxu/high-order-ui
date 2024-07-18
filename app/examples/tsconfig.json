@@ -1,5 +1,11 @@
 {
   "extends": "../../tsconfig.base.json",
+  /* ts-node为webpack提供webpack.config.ts的打包产物webpack.config.js https://webpack.js.org/configuration/configuration-languages/*/
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS",
+    },
+  },
   "compilerOptions": {
     "jsx": "react-jsx",
     "baseUrl": ".",

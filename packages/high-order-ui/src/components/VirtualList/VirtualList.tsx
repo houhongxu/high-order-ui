@@ -1,4 +1,4 @@
-import { ScrollView } from './ScrollView'
+import { ScrollView } from '../ScrollView'
 import classNames from 'classnames'
 import {
   ComponentProps,

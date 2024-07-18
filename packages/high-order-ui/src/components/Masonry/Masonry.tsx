@@ -1,4 +1,4 @@
-import { ScrollView } from './ScrollView'
+import { ScrollView } from '../ScrollView'
 import { ComponentProps, ReactNode, useMemo } from 'react'
 
 interface ItemType<T> {

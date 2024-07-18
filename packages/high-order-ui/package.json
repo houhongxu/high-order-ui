@@ -2,14 +2,13 @@
   "name": "high-order-ui",
   "version": "0.0.3",
   "description": "high order ui",
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "./umd/index.js",
+  "types": "./umd/index.d.ts",
   "files": [
-    "./lib"
+    "./umd"
   ],
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack",
-    "dev": "cross-env NODE_ENV=development webpack --watch"
+    "build": "rm -rf umd && cross-env NODE_ENV=production FORMAT_ENV=umd  rollup --config rollup.config.ts --configPlugin typescript --bundleConfigAsCjs"
   },
   "keywords": [],
   "author": "",
@@ -18,11 +17,18 @@
     "classnames": "^2.5.1"
   },
   "devDependencies": {
+    "@rollup/plugin-alias": "^5.1.0",
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "react": "^18.2.0",
     "react-blurhash": "^0.3.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "rollup": "^4.18.1",
+    "rollup-plugin-postcss": "^4.0.2",
+    "tslib": "^2.6.3"
   },
   "peerDependencies": {
     "react": ">=16.9.0",
