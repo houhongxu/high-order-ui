@@ -1,6 +1,6 @@
 import { routesConfig } from './routes/config'
 import '@/styles/global.css'
-import 'high-order-ui/umd/index.css'
+import 'high-order-ui/lib/index.css'
 import { Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider, createHashRouter } from 'react-router-dom'
