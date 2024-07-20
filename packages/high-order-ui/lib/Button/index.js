@@ -2,6 +2,10 @@
 
 var require$$0 = require('react');
 
+function getDefaultExportFromCjs (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+}
+
 var jsxRuntime = {exports: {}};
 
 var reactJsxRuntime_production_min = {};
@@ -1236,6 +1240,7 @@ function requireReactJsxRuntime_development () {
 	  }
 	}
 
+	var didWarnAboutKeySpread = {};
 	function jsxWithValidation(type, props, key, isStaticChildren, source, self) {
 	  {
 	    var validType = isValidElementType(type); // We warn in this case but don't throw. We expect the element creation to
@@ -1306,6 +1311,24 @@ function requireReactJsxRuntime_development () {
 	      }
 	    }
 
+	    {
+	      if (hasOwnProperty.call(props, 'key')) {
+	        var componentName = getComponentNameFromType(type);
+	        var keys = Object.keys(props).filter(function (k) {
+	          return k !== 'key';
+	        });
+	        var beforeExample = keys.length > 0 ? '{key: someKey, ' + keys.join(': ..., ') + ': ...}' : '{key: someKey}';
+
+	        if (!didWarnAboutKeySpread[componentName + beforeExample]) {
+	          var afterExample = keys.length > 0 ? '{' + keys.join(': ..., ') + ': ...}' : '{}';
+
+	          error('A props object containing a "key" prop is being spread into JSX:\n' + '  let props = %s;\n' + '  <%s {...props} />\n' + 'React keys must be passed directly to JSX without using spread:\n' + '  let props = %s;\n' + '  <%s key={someKey} {...props} />', beforeExample, componentName, afterExample, componentName);
+
+	          didWarnAboutKeySpread[componentName + beforeExample] = true;
+	        }
+	      }
+	    }
+
 	    if (type === REACT_FRAGMENT_TYPE) {
 	      validateFragmentProps(element);
 	    } else {
@@ -1351,8 +1374,90 @@ if (process.env.NODE_ENV === 'production') {
 
 var jsxRuntimeExports = jsxRuntime.exports;
 
+var classnames = {exports: {}};
+
+/*!
+	Copyright (c) 2018 Jed Watson.
+	Licensed under the MIT License (MIT), see
+	http://jedwatson.github.io/classnames
+*/
+
+(function (module) {
+	/* global define */
+
+	(function () {
+
+		var hasOwn = {}.hasOwnProperty;
+
+		function classNames () {
+			var classes = '';
+
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (arg) {
+					classes = appendClass(classes, parseValue(arg));
+				}
+			}
+
+			return classes;
+		}
+
+		function parseValue (arg) {
+			if (typeof arg === 'string' || typeof arg === 'number') {
+				return arg;
+			}
+
+			if (typeof arg !== 'object') {
+				return '';
+			}
+
+			if (Array.isArray(arg)) {
+				return classNames.apply(null, arg);
+			}
+
+			if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes('[native code]')) {
+				return arg.toString();
+			}
+
+			var classes = '';
+
+			for (var key in arg) {
+				if (hasOwn.call(arg, key) && arg[key]) {
+					classes = appendClass(classes, key);
+				}
+			}
+
+			return classes;
+		}
+
+		function appendClass (value, newClass) {
+			if (!newClass) {
+				return value;
+			}
+		
+			if (value) {
+				return value + ' ' + newClass;
+			}
+		
+			return value + newClass;
+		}
+
+		if (module.exports) {
+			classNames.default = classNames;
+			module.exports = classNames;
+		} else {
+			window.classNames = classNames;
+		}
+	}()); 
+} (classnames));
+
+var classnamesExports = classnames.exports;
+var classNames = /*@__PURE__*/getDefaultExportFromCjs(classnamesExports);
+
 function Button() {
-    return jsxRuntimeExports.jsx("div", { className: "bg-red w-10 h-10", children: "button" });
+    return (jsxRuntimeExports.jsx("div", { style: {
+            border: '1px solid #3d3',
+        }, className: classNames('w-10 h-10', 'blue'), children: "button" }));
 }
 
 exports.Button = Button;

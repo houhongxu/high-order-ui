@@ -7,7 +7,6 @@ import path from 'path'
 import { RollupOptions } from 'rollup'
 import postcss from 'rollup-plugin-postcss'
 import tailwindcss from 'tailwindcss'
-import { fileURLToPath } from 'url'
 
 enum FORMAT_ENUM {
   'umd' = 'umd',
@@ -15,17 +14,11 @@ enum FORMAT_ENUM {
   'cjs' = 'cjs',
 }
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
 const cjsConfigs = (
-  await fg.glob(['./src/components/**/index.ts', './src/components/index.ts'])
+  await fg.glob(['./src/components/**/index.ts', '!./src/components/index.ts'])
 ).map((relativePath) => ({
   input: relativePath,
-  outputDir: path
-    .dirname(relativePath)
-    .replace('src/components/', '')
-    .replace('src/components', ''),
+  outputDir: path.dirname(relativePath).replace('src/components/', ''),
 }))
 
 async function getConfig(
@@ -35,7 +28,12 @@ async function getConfig(
 ) {
   // cjs使用lib路径兼容 babel-plugin-import
   const dir =
-    format === FORMAT_ENUM.cjs ? path.join('lib', outputDir ?? './') : format
+    format === FORMAT_ENUM.cjs ? path.resolve('lib', outputDir ?? './') : format
+
+  const cssDir =
+    format === FORMAT_ENUM.cjs && input?.includes('components/')
+      ? path.resolve(dir, 'style', 'index.css')
+      : 'index.css'
 
   const baseConfig: RollupOptions = {
     input: './src/index.ts',
@@ -50,7 +48,7 @@ async function getConfig(
     external: ['react', 'react-dom'],
     plugins: [
       postcss({
-        extract: 'index.css',
+        extract: cssDir,
         plugins: [tailwindcss],
       }),
       resolve(),
@@ -61,7 +59,7 @@ async function getConfig(
         exclude: ['rollup.config.ts'],
       }),
       alias({
-        entries: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
+        entries: [{ find: '@', replacement: path.resolve('src') }],
       }),
     ],
   }
@@ -69,9 +67,11 @@ async function getConfig(
   const FORMAT_MAP: Record<FORMAT_ENUM, Partial<RollupOptions>> = {
     umd: {},
     es: {},
-    cjs: {
-      input,
-    },
+    cjs: input
+      ? {
+          input,
+        }
+      : {},
   }
 
   const formatedConfig = {
@@ -85,6 +85,7 @@ async function getConfig(
 export default [
   await getConfig(FORMAT_ENUM.umd),
   await getConfig(FORMAT_ENUM.es),
+  await getConfig(FORMAT_ENUM.cjs),
   ...(await Promise.all(
     cjsConfigs.map(
       async ({ input, outputDir }) =>

@@ -3,12 +3,13 @@
   "version": "0.0.3",
   "description": "high order ui",
   "main": "./lib/index.js",
-  "types": "./lib/types/src/index.d.ts",
+  "types": "./lib/types/index.d.ts",
   "files": [
     "./lib"
   ],
   "scripts": {
-    "build": "rm -rf lib es umd && cross-env NODE_ENV=production rollup --config rollup.config.ts --configPlugin typescript"
+    "build": "rm -rf lib es umd && cross-env NODE_ENV=production rollup --config rollup.config.ts --configPlugin typescript",
+    "dev": "rm -rf lib es umd && cross-env NODE_ENV=production rollup --config rollup.config.ts --configPlugin typescript --watch"
   },
   "keywords": [],
   "author": "",
