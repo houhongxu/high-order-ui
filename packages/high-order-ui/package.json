@@ -2,10 +2,12 @@
   "name": "high-order-ui",
   "version": "0.0.3",
   "description": "high order ui",
-  "main": "./lib/index.js",
-  "types": "./lib/types/index.d.ts",
+  "main": "./es/index.js",
+  "types": "./es/types/index.d.ts",
   "files": [
-    "./lib"
+    "./lib",
+    "./es",
+    "./umd"
   ],
   "scripts": {
     "build": "rm -rf lib es umd && cross-env NODE_ENV=production rollup --config rollup.config.ts --configPlugin typescript",
