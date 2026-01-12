@@ -10,6 +10,10 @@ interface OptimizedData {
   blurhash: string
 }
 
+interface PluginOptions {
+  filename?: string | ((pathData: PathData) => string)
+}
+
 const getOptimizedData = async (path: string) => {
   const sharpLink = sharp(path).raw().ensureAlpha()
 
@@ -40,6 +44,12 @@ const getOptimizedData = async (path: string) => {
 }
 
 class ImageOptimizerWebpackPlugin {
+  private filename?: string | ((pathData: PathData) => string)
+
+  constructor(options?: PluginOptions) {
+    this.filename = options?.filename
+  }
+
   apply(compiler: Compiler) {
     // 本次构建钩子
     compiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
@@ -71,7 +81,24 @@ class ImageOptimizerWebpackPlugin {
         compiler.options.output.assetModuleFilename = (pathData: PathData) => {
           const { width, height, blurhash } = dataMap[`./${pathData.filename}`]
 
-          return `[hash][ext]?width=${width}&height=${height}&blurhash=${blurhash}`
+          // 如果提供了 filename 参数，使用它；否则使用默认格式
+          let baseFilename: string
+
+          if (this.filename) {
+            if (typeof this.filename === 'function') {
+              baseFilename = this.filename(pathData)
+            } else {
+              baseFilename = this.filename
+            }
+          } else {
+            baseFilename = '[hash][ext]'
+          }
+
+          // 提取基础文件名（去掉已有的 query 参数）
+          const baseNameWithoutQuery = baseFilename.split('?')[0]
+
+          // 添加查询参数
+          return `${baseNameWithoutQuery}?width=${width}&height=${height}&blurhash=${blurhash}`
         }
       })
     })
